@@ -1,0 +1,247 @@
+openapi: 3.0.0
+info:
+  version: 0.0.1
+  title: Stem Player Service Collection (Beta)
+  description: A collection of API service endpoints for use in combination with our Stem Player
+  termsOfService: https://www.sound.ws/terms-of-service
+  license:
+    name: LICENSE
+    url: https://www.sound.ws/terms-and-conditions
+
+servers:
+  - url: https://blobr.soundwebservices.net/v1
+    description: The API exposed through Blobr.io
+
+paths:
+  /hls:
+    get:
+      summary: Transcodes an audio file into HLS format
+      description: Takes a sourceUrl for a WAV and returns a HLS playlist
+      operationId: hlsTranscode
+      parameters:
+        - in: query
+          name: sourceUrl
+          required: true
+          schema:
+            type: string
+            example: https://abcdefg01234.cloudfront.net/drums.wav
+      responses:
+        '200':
+          description: Success
+          content:
+            application/x-mpegURL:
+              schema:
+                type: string
+                example: >
+                  #EXTM3U
+                  #EXT-X-VERSION:3
+                  #EXT-X-MEDIA-SEQUENCE:0
+                  #EXT-X-ALLOW-CACHE:YES
+                  #EXT-X-TARGETDURATION:5
+                  #EXTINF:5.000000,
+                  https://abcdefg01234.cloudfront.net/processed-audio/...
+                  #EXTINF:5.000000,
+                  https://abcdefg01234.cloudfront.net/processed-audio/...
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: An error occured
+
+  /waveform:
+    get:
+      summary: Gets a waveform as json data from an audio file
+      description: Gets waveform data based on a audio file provided by a URL
+      operationId: getM3u8
+      parameters:
+        - in: query
+          name: sourceUrl
+          required: true
+          schema:
+            type: string
+            example: https://abcdefg01234.cloudfront.net/drums-wav
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: string
+                example: >
+                  {
+                    "version": 2,
+                    "channels": 1,
+                    "sample_rate": 44100,
+                    "samples_per_pixel": 2205,
+                    "bits": 16,
+                    "length": 5018,
+                    "data": [-0.02,-0.02,-0.02,-0.02]
+                  }
+
+  /mix:
+    post:
+      summary: Create an audio mix of multiple audio sources
+      description: Merges multiple source audio (WAV) files with different volume settings
+      operationId: createAudioMix
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              description: The request body to create a mix
+              type: object
+              required:
+                - sources
+              properties:
+                sources:
+                  description: An array of urls pointing to source files
+                  type: array
+                  minItems: 2
+                  maxItems: 15
+                  items:
+                    description: A source entity
+                    type: object
+                    required:
+                      - src
+                      - volume
+                    properties:
+                      src:
+                        description: A URL to a stem file
+                        type: string
+                        format: url
+                        example: https://your-cdn.com/wavs/drums.wav
+                      volume:
+                        type: number
+                        minimum: 0
+                        maximum: 1
+                filename:
+                  description: The content-disposition filename
+                  type: string
+                  default: myMixedStems.wav
+                metadata:
+                  description: The metadata with which to embed the wav
+                  type: array
+                  minItems: 0
+                  maxItems: 10
+                  items:
+                    description: A metadata key value entity
+                    type: object
+                    properties:
+                      key:
+                        type: string
+                        description: key
+                        enum:
+                          - artist
+                          - comment
+                          - copyright
+                          - date
+                          - genre
+                          - language
+                          - title
+                          - album
+                          - track
+                      value:
+                        type: string
+                        description: the value
+
+      responses:
+        '303':
+          description: Redirect to audio mix status
+          headers:
+            Location:
+              schema:
+                description: A url pointing to where to lookup the status of the pending request
+                type: string
+                format: url
+                example: https://youapi.com/status/b4d89bae-81e7-40c5-a76d-4f788997e7b1
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+            Access-Control-Allow-Headers:
+              schema:
+                type: string
+            Access-Control-Expose-Headers:
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - message
+                properties:
+                  message:
+                    type: string
+                    example: The request has been accepted
+  /mix/status/{uuid}:
+    get:
+      summary: Get the status of a mix request
+      operationId: getAudioMixStatus
+      parameters:
+        - in: path
+          name: uuid
+          description: The request uuid
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: The request to get the status of the request was succesfull
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - message
+                  - job
+                properties:
+                  message:
+                    type: string
+                    example: The request has been accepted
+                  _url:
+                    description: A url pointing to where to lookup the status of the pending request
+                    type: string
+                    format: url
+                    example: https://youapi.com/status/b4d89bae-81e7-40c5-a76d-4f788997e7b1
+                  _retryIn:
+                    description: A hint about when to lookup the status of the pending request (in seconds)
+                    type: integer
+                    format: int32
+                    example: 5
+                  job:
+                    type: object
+                    required:
+                      - uuid
+                      - status
+                      - createdAt
+                    properties:
+                      uuid:
+                        description: A uuid that identifies the request
+                        type: string
+                        format: uuid
+                        example: b4d89bae-81e7-40c5-a76d-4f788997e7b1
+                      status:
+                        description: The status of the request
+                        type: string
+                        example: STATUS_PROCESSING
+                      createdAt:
+                        description: A ISO date indicating when the request was received
+                        type: string
+                        format: date-time
+                        example: '2022-02-09T07:47:28.691Z'
+                      completedAt:
+                        description: An ISO date indicating when the request was completed
+                        type: string
+                        format: date-time
+                        example: '2022-02-09T07:49:28.691Z'
+                      timeTaken:
+                        description: The time (in miliseconds) it took to complete the request
+                        type: integer
+                        format: int32
+                        example: 4019

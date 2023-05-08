@@ -1,0 +1,5 @@
+.stack-output.json
+yarn-error.log
+node_modules
+.env
+yarn-error.log
