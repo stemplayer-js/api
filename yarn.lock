@@ -1281,10 +1281,10 @@
   resolved "https://registry.yarnpkg.com/@soundws/audio-tools-lambda-layer/-/audio-tools-lambda-layer-1.0.3-beta.3.tgz#3c6a065a3ba146b43a0a61c0de6dd8e4f90011a3"
   integrity sha512-PPSvjYiqf/7NOUXVHWw3CK6Psa2Z09qVX9QPsgWOCu7XeZNyEl+yUx4IV8ekyDUwRO5f++MR/3o0kB43Nde13Q==
 
-"@soundws/audio-waveform-service@^3.0.0-beta.7":
-  version "3.0.0-beta.7"
-  resolved "https://registry.yarnpkg.com/@soundws/audio-waveform-service/-/audio-waveform-service-3.0.0-beta.7.tgz#d872dda13de44f0ad40046aac138b33ba9f33cfb"
-  integrity sha512-lZyg3+S0I1y0XwO1rJV7U7fyh+HP3MEahGBq3RqDwyu8Vw+K4IhM+NqRd8B2SXiw9xhIRtxMimalbp3/HvUuaA==
+"@soundws/audio-waveform-service@^3.0.0-beta.8":
+  version "3.0.0-beta.8"
+  resolved "https://registry.yarnpkg.com/@soundws/audio-waveform-service/-/audio-waveform-service-3.0.0-beta.8.tgz#0856bf0ffcfcf8a6f4e750363d2c42700e7e9d65"
+  integrity sha512-WmcKbaiKw9HF8dFd9t9JB7WV8GMUWvFKQNyq6urdqs2qxjkwgaz6ax171Io2C3paogbwbWSQS3cAFcV01VQC9A==
 
 "@soundws/audiowaveform-lambda-layer@^1.0.3-beta.3":
   version "1.0.3-beta.3"
@@ -1299,10 +1299,10 @@
     "@aws-sdk/client-api-gateway" "^3.131.0"
     cfn-response-async "^1.0.0"
 
-"@soundws/hls-service@^3.0.0-beta.8":
-  version "3.0.0-beta.8"
-  resolved "https://registry.yarnpkg.com/@soundws/hls-service/-/hls-service-3.0.0-beta.8.tgz#637722ace339a5b191de62e78ebbcefa3f776257"
-  integrity sha512-oeg2Iu8OxGmQeBUo3I8O7wNZBk25YELuYhIiiDSgkcIWBvp1U0TXi0lJ1Ws27QarVe1DJOoooNLRuqoV54lBsA==
+"@soundws/hls-service@^3.0.0-beta.9":
+  version "3.0.0-beta.9"
+  resolved "https://registry.yarnpkg.com/@soundws/hls-service/-/hls-service-3.0.0-beta.9.tgz#71ab8dae5347d83ca4e828fc163b9aaa5dbd1b34"
+  integrity sha512-1FNQoDqzHCW4HQAHromfxsawObQTLaveu3lYZ8JwuajQ8d2ulweVHClHxzhR/iXF0EQxEHJYQB2NdYnfw6WI8w==
 
 "@types/babel__core@^7.1.14":
   version "7.20.0"
