@@ -1,14 +1,18 @@
-# Sound Web Services API
+# The sound.ws API
 
-An integrated deployment of a suite of services which together compose the API.
+An integrated deployment of a suite of micro-services which together compose the API.
 
-## Prerequisites
+# Prerequisites
 
 - Create a SAM deployment bucket
 - Copy `cp .env.dist .env` and fill out the variables
 
-## Deployment
+# Deployment
 
 ```bash
 make deploy
 ```
+
+# Test
+
+Run `make test` (after deployment)

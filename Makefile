@@ -1,9 +1,5 @@
-.PHONY: deploy destroy
+.PHONY: all
 
-# https://stackoverflow.com/questions/2826029/passing-additional-variables-from-command-line-to-make
-# https://github.com/babel/babel/blob/master/Makefile
-# CFLAGS=-g
-# export CFLAGS
 export
 
 -include .env
@@ -21,8 +17,25 @@ deploy:
 		AllowedAudioOrigins=$(ALLOWED_AUDIO_ORIGINS) \
 		CORSAllowedOrigins=$(CORS_ALLOWED_ORIGINS)
 
+	$(MAKE dump-stack)
+	$(MAKE show-warning)
+
+	$(call show_api_key_warning)
+
 destroy:
 	aws cloudformation delete-stack --stack-name $(STACK_NAME) --region $(AWS_REGION)
 
 get-token:
 	@./scripts/generate-token.js
+
+dump-stack:
+	@aws cloudformation describe-stacks --stack-name $(STACK_NAME) --region $(AWS_REGION) > .stack-output.json
+
+test:
+	$(call show_api_key_warning)
+	npx jest tests/
+
+define show_api_key_warning
+	@echo "\033[0;33mNote that the API is configured to require an API key. This needs to be configured manually. If this is not needed, disable the relevant resources in template.yaml\033[0m"
+endef
+
