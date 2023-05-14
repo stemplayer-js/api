@@ -29,6 +29,7 @@ get-token:
 	@./scripts/generate-token.js
 
 dump-stack:
+	@echo "Dumping stack"
 	@aws cloudformation describe-stacks --stack-name $(STACK_NAME) --region $(AWS_REGION) > .stack-output.json
 
 test:

@@ -26,6 +26,14 @@ Parameters:
   CORSAllowedOrigins:
     Type: String
     Default: ""
+  AudioCacheTtl:
+    Type: Number
+    Description: Determines how long unused processed audio is held before its removed from the audio bucket. Default 30 days.
+    Default: "31104000" # 1 Year
+  SignedUrlExpirySec:
+    Type: String
+    Description: The duration of the signed urls to the audio
+    Default: 86400 # 24 hours
 
 Resources:
   AudioToolsLayer:
@@ -70,6 +78,8 @@ Resources:
         BucketName: !Ref StorageBucket
         ExistingBucket: true
         AllowedSegmentDuration: 5
+        AudioCacheTtl: !Ref AudioCacheTtl
+        SignedUrlExpirySec: !Ref SignedUrlExpirySec
 
   WaveformService:
     Type: AWS::Serverless::Application
