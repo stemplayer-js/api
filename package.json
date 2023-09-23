@@ -1,12 +1,13 @@
 {
   "name": "@stemplayer-js/api",
   "version": "0.0.0",
-  "license": "MIT",
+  "license": "AGPL-3.0-or-later",
   "scripts": {
     "deploy": "make deploy",
     "destroy": "make destroy",
     "get-token": "make get-token",
-    "test": "make test"
+    "test": "make test",
+    "sam:publish": "sam package --output-template-file packaged.yaml --s3-bucket $AWS_SAM_PACKAGE_BUCKET_NAME --region ${AWS_REGION:=us-east-1} && sam publish --template packaged.yaml --region ${AWS_REGION:=us-east-1} --semantic-version $npm_package_version"
   },
   "devDependencies": {
     "axios": "^1.5.0",

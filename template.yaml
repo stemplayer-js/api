@@ -138,3 +138,17 @@ Outputs:
   SwsSecret:
     Description: "The secret"
     Value: !Ref SwsSecret
+
+Metadata:
+  AWS::ServerlessRepo::Application:
+    Name: stemplayer-js-api
+    Description: >
+      A nested stack of certain serverless microservices to provide the stemplayer with backend powers
+    Author: Team First Coders
+    ReadmeUrl: README.md
+    SpdxLicenseId: AGPL-3.0-or-later
+    LicenseUrl: LICENSE
+    Labels: ["layer", "lambda", "serverless", "waveform", "stemplayer-js"]
+    HomePageUrl: https://github.com/stemplayer-js/api
+    SourceCodeUrl: https://github.com/stemplayer-js/api
+    SemanticVersion: 1.0.0 # overwritten by sam publish cli command
