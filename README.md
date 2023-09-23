@@ -1,6 +1,10 @@
-# The sound.ws API
+# The Stemplayer-JS Backend API
 
-An integrated deployment of a suite of micro-services which together compose the API.
+A nested stack of certain serverless microservices to provide the stemplayer with
+
+- Audio conversion of Audio Files into HLS format
+- Automatic generation of waveforms
+- Mixing together of various stem audio files in order to create a high quality downloadable audio file.
 
 # Prerequisites
 
