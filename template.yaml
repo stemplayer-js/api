@@ -56,7 +56,7 @@ Resources:
         SwsSecret: !Ref SwsSecret
         AudioToolsLayerArn: !GetAtt AudioToolsLayer.Outputs.LayerVersion
         CORSAllowedOrigins: !Ref CORSAllowedOrigins
-        BucketName: !Ref StorageBucket
+        BucketName: !Ref StorageBucketName
         ExistingBucket: true
 
   HlsService:
@@ -75,7 +75,7 @@ Resources:
         AllowedFormats: "mp3,oga"
         AllowedBitrates: 128,96
         AllowedSamplerates: 44100,48000
-        BucketName: !Ref StorageBucket
+        BucketName: !Ref StorageBucketName
         ExistingBucket: true
         AllowedSegmentDuration: 5
         AudioCacheTtl: !Ref AudioCacheTtl
@@ -92,7 +92,7 @@ Resources:
         AudiowaveformLayerArn: !GetAtt AudiowaveformLayer.Outputs.LayerVersion
         AllowedAudioOrigins: !Ref AllowedAudioOrigins
         CORSAllowedOrigins: !Ref CORSAllowedOrigins
-        BucketName: !Ref StorageBucket
+        BucketName: !Ref StorageBucketName
         ExistingBucket: true
 
   # This is to ensure that API keys are required for all non OPTIONS resources
@@ -123,25 +123,25 @@ Resources:
         # The number of days to retain logs in CloudWatch Logs for.
         RetentionDays: "30"
 
-  StorageBucket:
-    Type: AWS::S3::Bucket
-    DeletionPolicy: Retain
-    Properties:
-      BucketName: !Ref StorageBucketName
-      CorsConfiguration:
-        CorsRules:
-          - AllowedOrigins:
-              - "*"
-            AllowedMethods:
-              - GET
-              - HEAD
-            AllowedHeaders:
-              - "*"
-      PublicAccessBlockConfiguration:
-        BlockPublicAcls: true
-        BlockPublicPolicy: true
-        IgnorePublicAcls: true
-        RestrictPublicBuckets: true
+  # StorageBucket:
+  #   Type: AWS::S3::Bucket
+  #   DeletionPolicy: Retain
+  #   Properties:
+  #     BucketName: !Ref StorageBucketName
+  #     CorsConfiguration:
+  #       CorsRules:
+  #         - AllowedOrigins:
+  #             - "*"
+  #           AllowedMethods:
+  #             - GET
+  #             - HEAD
+  #           AllowedHeaders:
+  #             - "*"
+  #     PublicAccessBlockConfiguration:
+  #       BlockPublicAcls: true
+  #       BlockPublicPolicy: true
+  #       IgnorePublicAcls: true
+  #       RestrictPublicBuckets: true
 
   FullLicenseUsagePlan:
     Type: AWS::ApiGateway::UsagePlan
