@@ -105,55 +105,25 @@ Resources:
         BucketName: !Ref StorageBucketName
         ExistingBucket: true
 
-  # This is to ensure that API keys are required for all non OPTIONS resources
-  soundwscustomcfresourcerequirekeyformethods:
-    Type: AWS::Serverless::Application
+  StorageBucket:
+    Type: AWS::S3::Bucket
+    DeletionPolicy: Retain
     Properties:
-      TimeoutInMinutes: 5
-      Location:
-        ApplicationId: arn:aws:serverlessrepo:us-east-1:715905027390:applications/soundws-custom-cf-resource-require-key-for-methods
-        SemanticVersion: 1.0.4-beta.2
-      Parameters:
-        StageName: !Ref StageName
-        ApiIds:
-          !Join [
-            ",",
-            [
-              !GetAtt soundwsaudiomixservice.Outputs.ApiId,
-              !GetAtt soundwshlsservice.Outputs.ApiId,
-              !GetAtt soundwsaudiowaveformservice.Outputs.ApiId,
-            ],
-          ]
-
-  AutoSetLogRetention:
-    Type: AWS::Serverless::Application
-    Properties:
-      Location:
-        ApplicationId: arn:aws:serverlessrepo:us-east-1:374852340823:applications/auto-set-log-group-retention
-        SemanticVersion: 1.5.0
-      Parameters:
-        # The number of days to retain logs in CloudWatch Logs for.
-        RetentionDays: "30"
-
-  # StorageBucket:
-  #   Type: AWS::S3::Bucket
-  #   DeletionPolicy: Retain
-  #   Properties:
-  #     BucketName: !Ref StorageBucketName
-  #     CorsConfiguration:
-  #       CorsRules:
-  #         - AllowedOrigins:
-  #             - "*"
-  #           AllowedMethods:
-  #             - GET
-  #             - HEAD
-  #           AllowedHeaders:
-  #             - "*"
-  #     PublicAccessBlockConfiguration:
-  #       BlockPublicAcls: true
-  #       BlockPublicPolicy: true
-  #       IgnorePublicAcls: true
-  #       RestrictPublicBuckets: true
+      BucketName: !Ref StorageBucketName
+      CorsConfiguration:
+        CorsRules:
+          - AllowedOrigins:
+              - "*"
+            AllowedMethods:
+              - GET
+              - HEAD
+            AllowedHeaders:
+              - "*"
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        BlockPublicPolicy: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: true
 
   FullLicenseUsagePlan:
     Type: AWS::ApiGateway::UsagePlan
