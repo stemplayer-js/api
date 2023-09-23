@@ -1,5 +1,5 @@
 Transform: AWS::Serverless-2016-10-31
-Description: SoundWs API
+Description: A API backend composed of various serverless applications for use with stemplayer-js
 
 Parameters:
   StageName:
@@ -36,38 +36,46 @@ Parameters:
     Default: 86400 # 24 hours
 
 Resources:
-  AudioToolsLayer:
+  soundwsaudiotoolslambdalayer:
     Type: AWS::Serverless::Application
     Properties:
-      Location: node_modules/@soundws/audio-tools-lambda-layer/template.yaml
+      Location:
+        ApplicationId: arn:aws:serverlessrepo:us-east-1:715905027390:applications/soundws-audio-tools-lambda-layer
+        SemanticVersion: 1.0.4-beta.0
 
-  AudiowaveformLayer:
+  soundwsaudiowaveformlambdalayer:
     Type: AWS::Serverless::Application
     Properties:
-      Location: node_modules/@soundws/audiowaveform-lambda-layer/template.yaml
+      Location:
+        ApplicationId: arn:aws:serverlessrepo:us-east-1:715905027390:applications/soundws-audiowaveform-lambda-layer
+        SemanticVersion: 1.0.4-beta.0
 
-  AudioMixService:
+  soundwsaudiomixservice:
     Type: AWS::Serverless::Application
     Properties:
-      Location: node_modules/@soundws/audio-mix-service/dist/template.yaml
+      Location:
+        ApplicationId: arn:aws:serverlessrepo:us-east-1:715905027390:applications/soundws-audio-mix-service
+        SemanticVersion: 3.0.1-beta.3
       Parameters:
         LogLevel: !Ref LogLevel
         StageName: !Ref StageName
         SwsSecret: !Ref SwsSecret
-        AudioToolsLayerArn: !GetAtt AudioToolsLayer.Outputs.LayerVersion
+        AudioToolsLayerArn: !GetAtt soundwsaudiotoolslambdalayer.Outputs.LayerVersion
         CORSAllowedOrigins: !Ref CORSAllowedOrigins
-        BucketName: !Ref StorageBucket
+        BucketName: !Ref StorageBucketName
         ExistingBucket: true
 
-  HlsService:
+  soundwshlsservice:
     Type: AWS::Serverless::Application
     Properties:
-      Location: node_modules/@soundws/hls-service/dist/template.yaml
+      Location:
+        ApplicationId: arn:aws:serverlessrepo:us-east-1:715905027390:applications/soundws-hls-service
+        SemanticVersion: 3.0.1-beta.3
       Parameters:
         LogLevel: !Ref LogLevel
         StageName: !Ref StageName
         SwsSecret: !Ref SwsSecret
-        AudioToolsLayerArn: !GetAtt AudioToolsLayer.Outputs.LayerVersion
+        AudioToolsLayerArn: !GetAtt soundwsaudiotoolslambdalayer.Outputs.LayerVersion
         CloudfrontPrivateKey: !Ref CloudfrontPrivateKey
         CloudfrontKeypairId: !Ref CloudfrontKeypairId
         AllowedAudioOrigins: !Ref AllowedAudioOrigins
@@ -75,53 +83,27 @@ Resources:
         AllowedFormats: "mp3,oga"
         AllowedBitrates: 128,96
         AllowedSamplerates: 44100,48000
-        BucketName: !Ref StorageBucket
+        BucketName: !Ref StorageBucketName
         ExistingBucket: true
         AllowedSegmentDuration: 5
         AudioCacheTtl: !Ref AudioCacheTtl
         SignedUrlExpirySec: !Ref SignedUrlExpirySec
 
-  WaveformService:
+  soundwsaudiowaveformservice:
     Type: AWS::Serverless::Application
     Properties:
-      Location: node_modules/@soundws/audio-waveform-service/dist/template.yaml
+      Location:
+        ApplicationId: arn:aws:serverlessrepo:us-east-1:715905027390:applications/soundws-audio-waveform-service
+        SemanticVersion: 3.0.1-beta.3
       Parameters:
         LogLevel: !Ref LogLevel
         StageName: !Ref StageName
         SwsSecret: !Ref SwsSecret
-        AudiowaveformLayerArn: !GetAtt AudiowaveformLayer.Outputs.LayerVersion
+        AudiowaveformLayerArn: !GetAtt soundwsaudiowaveformlambdalayer.Outputs.LayerVersion
         AllowedAudioOrigins: !Ref AllowedAudioOrigins
         CORSAllowedOrigins: !Ref CORSAllowedOrigins
-        BucketName: !Ref StorageBucket
+        BucketName: !Ref StorageBucketName
         ExistingBucket: true
-
-  # This is to ensure that API keys are required for all non OPTIONS resources
-  EnableApiKeysForMethods:
-    Type: AWS::Serverless::Application
-    Properties:
-      Location: node_modules/@soundws/custom-cf-resource-require-key-for-methods/dist/template.yaml
-      TimeoutInMinutes: 5
-      Parameters:
-        StageName: !Ref StageName
-        ApiIds:
-          !Join [
-            ",",
-            [
-              !GetAtt AudioMixService.Outputs.ApiId,
-              !GetAtt HlsService.Outputs.ApiId,
-              !GetAtt WaveformService.Outputs.ApiId,
-            ],
-          ]
-
-  AutoSetLogRetention:
-    Type: AWS::Serverless::Application
-    Properties:
-      Location:
-        ApplicationId: arn:aws:serverlessrepo:us-east-1:374852340823:applications/auto-set-log-group-retention
-        SemanticVersion: 1.5.0
-      Parameters:
-        # The number of days to retain logs in CloudWatch Logs for.
-        RetentionDays: "30"
 
   StorageBucket:
     Type: AWS::S3::Bucket
@@ -149,11 +131,11 @@ Resources:
       Description: Usage plan for full usage
       UsagePlanName: Full
       ApiStages:
-        - ApiId: !GetAtt AudioMixService.Outputs.ApiId
+        - ApiId: !GetAtt soundwsaudiomixservice.Outputs.ApiId
           Stage: !Ref StageName
-        - ApiId: !GetAtt HlsService.Outputs.ApiId
+        - ApiId: !GetAtt soundwshlsservice.Outputs.ApiId
           Stage: !Ref StageName
-        - ApiId: !GetAtt WaveformService.Outputs.ApiId
+        - ApiId: !GetAtt soundwsaudiowaveformservice.Outputs.ApiId
           Stage: !Ref StageName
       Quota:
         Limit: 50000
@@ -168,11 +150,11 @@ Resources:
       Description: Usage plan for trial
       UsagePlanName: Trial
       ApiStages:
-        - ApiId: !GetAtt AudioMixService.Outputs.ApiId
+        - ApiId: !GetAtt soundwsaudiomixservice.Outputs.ApiId
           Stage: !Ref StageName
-        - ApiId: !GetAtt HlsService.Outputs.ApiId
+        - ApiId: !GetAtt soundwshlsservice.Outputs.ApiId
           Stage: !Ref StageName
-        - ApiId: !GetAtt WaveformService.Outputs.ApiId
+        - ApiId: !GetAtt soundwsaudiowaveformservice.Outputs.ApiId
           Stage: !Ref StageName
       Quota:
         Limit: 1000
@@ -184,13 +166,13 @@ Resources:
 Outputs:
   AudioMixServiceEndpoint:
     Description: "The endpoint to the audio-mix-service"
-    Value: !GetAtt AudioMixService.Outputs.ServiceApi
+    Value: !GetAtt soundwsaudiomixservice.Outputs.ServiceApi
   HlsServiceEndpoint:
     Description: "The endpoint to the hls-service"
-    Value: !GetAtt HlsService.Outputs.ServiceApi
+    Value: !GetAtt soundwshlsservice.Outputs.ServiceApi
   AudioWaveformServiceEndpoint:
     Description: "The endpoint to the audiowaveform-service"
-    Value: !GetAtt WaveformService.Outputs.ServiceApi
+    Value: !GetAtt soundwsaudiowaveformservice.Outputs.ServiceApi
   SwsSecret:
     Description: "The secret"
     Value: !Ref SwsSecret

@@ -17,9 +17,7 @@ deploy:
 		AllowedAudioOrigins=$(ALLOWED_AUDIO_ORIGINS) \
 		CORSAllowedOrigins=$(CORS_ALLOWED_ORIGINS)
 
-	$(MAKE dump-stack)
-	$(MAKE show-warning)
-
+	$(MAKE) dump-stack
 	$(call show_api_key_warning)
 
 destroy:
