@@ -125,44 +125,6 @@ Resources:
         IgnorePublicAcls: true
         RestrictPublicBuckets: true
 
-  FullLicenseUsagePlan:
-    Type: AWS::ApiGateway::UsagePlan
-    Properties:
-      Description: Usage plan for full usage
-      UsagePlanName: Full
-      ApiStages:
-        - ApiId: !GetAtt soundwsaudiomixservice.Outputs.ApiId
-          Stage: !Ref StageName
-        - ApiId: !GetAtt soundwshlsservice.Outputs.ApiId
-          Stage: !Ref StageName
-        - ApiId: !GetAtt soundwsaudiowaveformservice.Outputs.ApiId
-          Stage: !Ref StageName
-      Quota:
-        Limit: 50000
-        Period: DAY
-      Throttle:
-        BurstLimit: 5000
-        RateLimit: 1000
-
-  TrialUsagePlan:
-    Type: AWS::ApiGateway::UsagePlan
-    Properties:
-      Description: Usage plan for trial
-      UsagePlanName: Trial
-      ApiStages:
-        - ApiId: !GetAtt soundwsaudiomixservice.Outputs.ApiId
-          Stage: !Ref StageName
-        - ApiId: !GetAtt soundwshlsservice.Outputs.ApiId
-          Stage: !Ref StageName
-        - ApiId: !GetAtt soundwsaudiowaveformservice.Outputs.ApiId
-          Stage: !Ref StageName
-      Quota:
-        Limit: 1000
-        Period: MONTH
-      Throttle:
-        BurstLimit: 100
-        RateLimit: 25
-
 Outputs:
   AudioMixServiceEndpoint:
     Description: "The endpoint to the audio-mix-service"
