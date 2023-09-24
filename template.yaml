@@ -25,7 +25,7 @@ Parameters:
     Default: "*"
   CORSAllowedOrigins:
     Type: String
-    Default: ""
+    Default: "*"
   AudioCacheTtl:
     Type: Number
     Description: Determines how long unused processed audio is held before its removed from the audio bucket. Default 30 days.
