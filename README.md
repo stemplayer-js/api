@@ -25,3 +25,7 @@ Run `make deploy`
 ## Test
 
 Run `make test`
+
+## Production
+
+Make sure that the values for `CORS_ALLOWED_ORIGINS` and `ALLOWED_AUDIO_ORIGINS` (in .env) are set to non wildcard values
