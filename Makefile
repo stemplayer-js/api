@@ -11,14 +11,12 @@ deploy:
 		LogLevel=$(LOG_LEVEL) \
 		StageName=$(STAGE) \
 		SwsSecret=$(SWS_SECRET) \
-		'CloudfrontPrivateKey=$(CLOUDFRONT_PRIVATE_KEY)' \
-		CloudfrontKeypairId=$(CLOUDFRONT_KEYPAIR_ID) \
 		StorageBucketName=$(STORAGE_BUCKET_NAME) \
 		AllowedAudioOrigins=$(ALLOWED_AUDIO_ORIGINS) \
 		CORSAllowedOrigins=$(CORS_ALLOWED_ORIGINS)
 
 	$(MAKE) dump-stack
-	$(call show_api_key_warning)
+	@echo "\033[0;33mTo test the deployment run npm test\033[0m"
 
 destroy:
 	aws cloudformation delete-stack --stack-name $(STACK_NAME) --region $(AWS_REGION)
@@ -31,7 +29,6 @@ dump-stack:
 	@aws cloudformation describe-stacks --stack-name $(STACK_NAME) --region $(AWS_REGION) > .stack-output.json
 
 test:
-	$(call show_api_key_warning)
 	npx jest tests/
 
 define show_api_key_warning

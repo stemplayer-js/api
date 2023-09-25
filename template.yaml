@@ -11,12 +11,6 @@ Parameters:
   SwsSecret:
     Type: String
     NoEcho: true
-  CloudfrontPrivateKey:
-    Type: String
-    Default: ""
-  CloudfrontKeypairId:
-    Type: String
-    Default: ""
   StorageBucketName:
     Type: String
   AllowedAudioOrigins:
@@ -76,8 +70,6 @@ Resources:
         StageName: !Ref StageName
         SwsSecret: !Ref SwsSecret
         AudioToolsLayerArn: !GetAtt soundwsaudiotoolslambdalayer.Outputs.LayerVersion
-        CloudfrontPrivateKey: !Ref CloudfrontPrivateKey
-        CloudfrontKeypairId: !Ref CloudfrontKeypairId
         AllowedAudioOrigins: !Ref AllowedAudioOrigins
         CORSAllowedOrigins: !Ref CORSAllowedOrigins
         AllowedFormats: "mp3,oga"
@@ -105,25 +97,25 @@ Resources:
         BucketName: !Ref StorageBucketName
         ExistingBucket: true
 
-  StorageBucket:
-    Type: AWS::S3::Bucket
-    DeletionPolicy: Retain
-    Properties:
-      BucketName: !Ref StorageBucketName
-      CorsConfiguration:
-        CorsRules:
-          - AllowedOrigins:
-              - "*"
-            AllowedMethods:
-              - GET
-              - HEAD
-            AllowedHeaders:
-              - "*"
-      PublicAccessBlockConfiguration:
-        BlockPublicAcls: true
-        BlockPublicPolicy: true
-        IgnorePublicAcls: true
-        RestrictPublicBuckets: true
+  # StorageBucket:
+  #   Type: AWS::S3::Bucket
+  #   DeletionPolicy: Retain
+  #   Properties:
+  #     BucketName: !Ref StorageBucketName
+  #     CorsConfiguration:
+  #       CorsRules:
+  #         - AllowedOrigins:
+  #             - "*"
+  #           AllowedMethods:
+  #             - GET
+  #             - HEAD
+  #           AllowedHeaders:
+  #             - "*"
+  #     PublicAccessBlockConfiguration:
+  #       BlockPublicAcls: true
+  #       BlockPublicPolicy: true
+  #       IgnorePublicAcls: true
+  #       RestrictPublicBuckets: true
 
 Outputs:
   AudioMixServiceEndpoint:
