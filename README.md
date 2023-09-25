@@ -6,6 +6,10 @@ A nested stack of certain serverless microservices to provide the stemplayer wit
 - [Automatic generation of waveforms](https://github.com/sound-ws/audio-waveform-service)
 - [Mixing together of various stem audio files in order to create a high quality downloadable audio file.](https://github.com/sound-ws/audio-mix-service)
 
+## Usage
+
+You can either deploy from by checking out this repository and following the steps below; but absolutely the easiest way is to deploy it directly from the [AWS Serverless Application Repository](https://aws.amazon.com/serverless/serverlessrepo/) into your own AWS account.
+
 ## Prerequisites
 
 - Make sure you have installed [AWS SAM CLI](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/install-sam-cli.html)
