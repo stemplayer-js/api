@@ -13,7 +13,8 @@ deploy:
 		SwsSecret=$(SWS_SECRET) \
 		StorageBucketName=$(STORAGE_BUCKET_NAME) \
 		AllowedAudioOrigins=$(ALLOWED_AUDIO_ORIGINS) \
-		CORSAllowedOrigins=$(CORS_ALLOWED_ORIGINS)
+		CORSAllowedOrigins=$(CORS_ALLOWED_ORIGINS) \
+		ExistingBucket=$(EXISTING_BUCKET)
 
 	$(MAKE) dump-stack
 	@echo "\033[0;33mTo test the deployment run npm test\033[0m"

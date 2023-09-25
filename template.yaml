@@ -1,6 +1,9 @@
 Transform: AWS::Serverless-2016-10-31
 Description: A API backend composed of various serverless applications for use with stemplayer-js
 
+Conditions:
+  CreateBucket: !Not [!Equals [!Ref ExistingBucket, true]]
+
 Parameters:
   StageName:
     Type: String
@@ -13,6 +16,13 @@ Parameters:
     NoEcho: true
   StorageBucketName:
     Type: String
+  ExistingBucket:
+    Type: String
+    Description: Whether to create the audio bucket
+    AllowedValues:
+      - true
+      - false
+    Default: "false"
   AllowedAudioOrigins:
     Type: String
     Description: Origins from which the service can source audio
@@ -97,25 +107,26 @@ Resources:
         BucketName: !Ref StorageBucketName
         ExistingBucket: true
 
-  # StorageBucket:
-  #   Type: AWS::S3::Bucket
-  #   DeletionPolicy: Retain
-  #   Properties:
-  #     BucketName: !Ref StorageBucketName
-  #     CorsConfiguration:
-  #       CorsRules:
-  #         - AllowedOrigins:
-  #             - "*"
-  #           AllowedMethods:
-  #             - GET
-  #             - HEAD
-  #           AllowedHeaders:
-  #             - "*"
-  #     PublicAccessBlockConfiguration:
-  #       BlockPublicAcls: true
-  #       BlockPublicPolicy: true
-  #       IgnorePublicAcls: true
-  #       RestrictPublicBuckets: true
+  StorageBucket:
+    Type: AWS::S3::Bucket
+    DeletionPolicy: Retain
+    Condition: CreateBucket
+    Properties:
+      BucketName: !Ref StorageBucketName
+      CorsConfiguration:
+        CorsRules:
+          - AllowedOrigins:
+              - "*"
+            AllowedMethods:
+              - GET
+              - HEAD
+            AllowedHeaders:
+              - "*"
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        BlockPublicPolicy: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: true
 
 Outputs:
   AudioMixServiceEndpoint:
