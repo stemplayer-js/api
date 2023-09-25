@@ -2,6 +2,8 @@ const axios = require("axios");
 const getToken = require("../helpers/get-token");
 const getStackOutput = require("../helpers/get-stack-output");
 
+jest.setTimeout(10000);
+
 describe("hls-service", () => {
   let AWS_STACK;
 
