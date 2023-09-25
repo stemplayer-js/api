@@ -15,10 +15,11 @@ Parameters:
     Type: String
     NoEcho: true
   StorageBucketName:
+    Description: The name for the storage bucket. Ensure the name is sufficiently unique to avoid name clash.
     Type: String
   ExistingBucket:
     Type: String
-    Description: Whether to create the audio bucket
+    Description: Whether to create the audio bucket or use a pre-existing bucket
     AllowedValues:
       - true
       - false
@@ -28,6 +29,7 @@ Parameters:
     Description: Origins from which the service can source audio
     Default: "*"
   CORSAllowedOrigins:
+    Description: The permitted origins for which CORS headers will be added to responses
     Type: String
     Default: "*"
   AudioCacheTtl:
