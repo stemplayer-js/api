@@ -26,6 +26,10 @@ Run `make deploy`
 
 Run `make test`
 
+## Destroy
+
+To destroy the stack and remove all resources run `make destroy`.
+
 ## Production
 
 Make sure that the values for `CORS_ALLOWED_ORIGINS` and `ALLOWED_AUDIO_ORIGINS` (in .env) are set to non wildcard values
