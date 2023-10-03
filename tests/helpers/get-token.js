@@ -9,7 +9,7 @@ module.exports = () => {
     },
     process.env.SWS_SECRET,
     {
-      audience: "api.sound.ws",
+      audience: "stemplayer-js-api",
     }
   );
 };

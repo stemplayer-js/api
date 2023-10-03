@@ -23,7 +23,7 @@ Parameters:
     AllowedValues:
       - true
       - false
-    Default: "false"
+    Default: false
   AllowedAudioOrigins:
     Type: String
     Description: Origins from which the service can source audio
@@ -47,21 +47,31 @@ Resources:
     Properties:
       Location:
         ApplicationId: arn:aws:serverlessrepo:us-east-1:715905027390:applications/soundws-audio-tools-lambda-layer
-        SemanticVersion: 1.0.4-beta.1
+        SemanticVersion: 1.0.4-beta.6
 
   soundwsaudiowaveformlambdalayer:
     Type: AWS::Serverless::Application
     Properties:
       Location:
         ApplicationId: arn:aws:serverlessrepo:us-east-1:715905027390:applications/soundws-audiowaveform-lambda-layer
-        SemanticVersion: 1.0.4-beta.1
+        SemanticVersion: 1.0.4-beta.4
+
+  soundwslambdabearerauthorizer:
+    Type: AWS::Serverless::Application
+    Properties:
+      Location:
+        ApplicationId: arn:aws:serverlessrepo:us-east-1:715905027390:applications/soundws-lambda-bearer-authorizer
+        SemanticVersion: 0.0.1-beta.1
+      Parameters:
+        JwtAudience: stemplayer-js-api
+        SwsSecret: !Ref SwsSecret
 
   soundwsaudiomixservice:
     Type: AWS::Serverless::Application
     Properties:
       Location:
         ApplicationId: arn:aws:serverlessrepo:us-east-1:715905027390:applications/soundws-audio-mix-service
-        SemanticVersion: 3.0.1-beta.4
+        SemanticVersion: 3.0.1-beta.6
       Parameters:
         LogLevel: !Ref LogLevel
         StageName: !Ref StageName
@@ -70,17 +80,17 @@ Resources:
         CORSAllowedOrigins: !Ref CORSAllowedOrigins
         BucketName: !Ref StorageBucketName
         ExistingBucket: true
+        AuthorizerArn: !GetAtt soundwslambdabearerauthorizer.Outputs.LambdaAuthorizerFunctionArn
 
   soundwshlsservice:
     Type: AWS::Serverless::Application
     Properties:
       Location:
         ApplicationId: arn:aws:serverlessrepo:us-east-1:715905027390:applications/soundws-hls-service
-        SemanticVersion: 3.1.0-beta.0
+        SemanticVersion: 3.1.0-beta.2
       Parameters:
         LogLevel: !Ref LogLevel
         StageName: !Ref StageName
-        SwsSecret: !Ref SwsSecret
         AudioToolsLayerArn: !GetAtt soundwsaudiotoolslambdalayer.Outputs.LayerVersion
         AllowedAudioOrigins: !Ref AllowedAudioOrigins
         CORSAllowedOrigins: !Ref CORSAllowedOrigins
@@ -92,26 +102,28 @@ Resources:
         AllowedSegmentDuration: 5
         AudioCacheTtl: !Ref AudioCacheTtl
         SignedUrlExpirySec: !Ref SignedUrlExpirySec
+        AuthorizerArn: !GetAtt soundwslambdabearerauthorizer.Outputs.LambdaAuthorizerFunctionArn
 
   soundwsaudiowaveformservice:
     Type: AWS::Serverless::Application
     Properties:
       Location:
         ApplicationId: arn:aws:serverlessrepo:us-east-1:715905027390:applications/soundws-audio-waveform-service
-        SemanticVersion: 3.0.1-beta.4
+        SemanticVersion: 3.0.1-beta.6
       Parameters:
         LogLevel: !Ref LogLevel
         StageName: !Ref StageName
-        SwsSecret: !Ref SwsSecret
         AudiowaveformLayerArn: !GetAtt soundwsaudiowaveformlambdalayer.Outputs.LayerVersion
         AllowedAudioOrigins: !Ref AllowedAudioOrigins
         CORSAllowedOrigins: !Ref CORSAllowedOrigins
         BucketName: !Ref StorageBucketName
         ExistingBucket: true
+        AuthorizerArn: !GetAtt soundwslambdabearerauthorizer.Outputs.LambdaAuthorizerFunctionArn
 
   StorageBucket:
     Type: AWS::S3::Bucket
     DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
     Condition: CreateBucket
     Properties:
       BucketName: !Ref StorageBucketName
