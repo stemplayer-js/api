@@ -120,6 +120,18 @@ Resources:
         ExistingBucket: true
         AuthorizerArn: !GetAtt soundwslambdabearerauthorizer.Outputs.LambdaAuthorizerFunctionArn
 
+  soundwsstemsplitservice:
+    Type: AWS::Serverless::Application
+    Properties:
+      Location:
+        ApplicationId: arn:aws:serverlessrepo:us-east-1:715905027390:applications/soundws-stem-split-service
+        SemanticVersion: 0.0.1
+      Parameters:
+        AuthorizerArn: !GetAtt soundwslambdabearerauthorizer.Outputs.LambdaAuthorizerFunctionArn
+        BucketName: !Ref StorageBucketName
+        LogLevel: !Ref LogLevel
+        StageName: !Ref StageName
+
   StorageBucket:
     Type: AWS::S3::Bucket
     DeletionPolicy: Retain
@@ -152,6 +164,9 @@ Outputs:
   AudioWaveformServiceEndpoint:
     Description: "The endpoint to the audiowaveform-service"
     Value: !GetAtt soundwsaudiowaveformservice.Outputs.ServiceApi
+  StemSplitServiceEndpoint:
+    Description: "The endpoint to the stem-split-service"
+    Value: !GetAtt soundwsstemsplitservice.Outputs.ServiceApi
   SwsSecret:
     Description: "The secret"
     Value: !Ref SwsSecret

@@ -18,5 +18,8 @@ module.exports = () => {
     AudioWaveformServiceEndpoint: output.find(
       (e) => e.OutputKey === "AudioWaveformServiceEndpoint"
     )?.OutputValue,
+    StemSplitServiceEndpoint: output.find(
+      (e) => e.OutputKey === "StemSplitServiceEndpoint"
+    )?.OutputValue,
   };
 };
