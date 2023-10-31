@@ -47,21 +47,21 @@ Resources:
     Properties:
       Location:
         ApplicationId: arn:aws:serverlessrepo:us-east-1:715905027390:applications/soundws-audio-tools-lambda-layer
-        SemanticVersion: 1.0.4-beta.6
+        SemanticVersion: 1.0.4-beta.7
 
   soundwsaudiowaveformlambdalayer:
     Type: AWS::Serverless::Application
     Properties:
       Location:
         ApplicationId: arn:aws:serverlessrepo:us-east-1:715905027390:applications/soundws-audiowaveform-lambda-layer
-        SemanticVersion: 1.0.4-beta.4
+        SemanticVersion: 1.0.4-beta.5
 
   soundwslambdabearerauthorizer:
     Type: AWS::Serverless::Application
     Properties:
       Location:
         ApplicationId: arn:aws:serverlessrepo:us-east-1:715905027390:applications/soundws-lambda-bearer-authorizer
-        SemanticVersion: 0.0.1-beta.1
+        SemanticVersion: 0.0.1-beta.2
       Parameters:
         JwtAudience: stemplayer-js-api
         SwsSecret: !Ref SwsSecret
@@ -71,7 +71,7 @@ Resources:
     Properties:
       Location:
         ApplicationId: arn:aws:serverlessrepo:us-east-1:715905027390:applications/soundws-audio-mix-service
-        SemanticVersion: 3.0.1-beta.6
+        SemanticVersion: 3.0.1-beta.7
       Parameters:
         LogLevel: !Ref LogLevel
         StageName: !Ref StageName
@@ -87,7 +87,7 @@ Resources:
     Properties:
       Location:
         ApplicationId: arn:aws:serverlessrepo:us-east-1:715905027390:applications/soundws-hls-service
-        SemanticVersion: 3.1.0-beta.2
+        SemanticVersion: 3.1.0-beta.3
       Parameters:
         LogLevel: !Ref LogLevel
         StageName: !Ref StageName
@@ -109,7 +109,7 @@ Resources:
     Properties:
       Location:
         ApplicationId: arn:aws:serverlessrepo:us-east-1:715905027390:applications/soundws-audio-waveform-service
-        SemanticVersion: 3.0.1-beta.6
+        SemanticVersion: 3.0.1-beta.7
       Parameters:
         LogLevel: !Ref LogLevel
         StageName: !Ref StageName
