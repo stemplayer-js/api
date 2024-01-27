@@ -35,7 +35,7 @@ Parameters:
   AudioCacheTtl:
     Type: Number
     Description: Determines how long unused processed audio is held before its removed from the audio bucket. Default 30 days.
-    Default: "31104000" # 1 Year
+    Default: "2592000" # 30 days
   SignedUrlExpirySec:
     Type: String
     Description: The duration of the signed urls to the audio
@@ -61,17 +61,18 @@ Resources:
     Properties:
       Location:
         ApplicationId: arn:aws:serverlessrepo:us-east-1:715905027390:applications/soundws-lambda-bearer-authorizer
-        SemanticVersion: 0.0.1-beta.2
+        SemanticVersion: 0.0.1-beta.7
       Parameters:
         JwtAudience: stemplayer-js-api
         SwsSecret: !Ref SwsSecret
+        LogLevel: !Ref LogLevel
 
   soundwsaudiomixservice:
     Type: AWS::Serverless::Application
     Properties:
       Location:
         ApplicationId: arn:aws:serverlessrepo:us-east-1:715905027390:applications/soundws-audio-mix-service
-        SemanticVersion: 3.0.1-beta.7
+        SemanticVersion: 3.0.1-beta.9
       Parameters:
         LogLevel: !Ref LogLevel
         StageName: !Ref StageName
@@ -87,7 +88,7 @@ Resources:
     Properties:
       Location:
         ApplicationId: arn:aws:serverlessrepo:us-east-1:715905027390:applications/soundws-hls-service
-        SemanticVersion: 3.1.0-beta.3
+        SemanticVersion: 3.1.0-beta.8
       Parameters:
         LogLevel: !Ref LogLevel
         StageName: !Ref StageName
@@ -109,7 +110,7 @@ Resources:
     Properties:
       Location:
         ApplicationId: arn:aws:serverlessrepo:us-east-1:715905027390:applications/soundws-audio-waveform-service
-        SemanticVersion: 3.0.1-beta.7
+        SemanticVersion: 3.0.1-beta.12
       Parameters:
         LogLevel: !Ref LogLevel
         StageName: !Ref StageName
@@ -125,7 +126,7 @@ Resources:
     Properties:
       Location:
         ApplicationId: arn:aws:serverlessrepo:us-east-1:715905027390:applications/soundws-stem-split-service
-        SemanticVersion: 0.0.1
+        SemanticVersion: 0.0.7
       Parameters:
         AuthorizerArn: !GetAtt soundwslambdabearerauthorizer.Outputs.LambdaAuthorizerFunctionArn
         BucketName: !Ref StorageBucketName
