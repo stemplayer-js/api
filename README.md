@@ -1,10 +1,12 @@
 # The Stemplayer-JS Backend API
 
-A nested stack of certain serverless microservices to provide the stemplayer with
+A nested [AWS SAM](https://aws.amazon.com/serverless/sam/) / Cloudformation stack of certain serverless microservices to provide the stemplayer with
 
 - [Audio conversion of Audio Files into HLS format](https://github.com/sound-ws/hls-service)
 - [Automatic generation of waveforms](https://github.com/sound-ws/audio-waveform-service)
 - [Mixing together of various stem audio files in order to create a high quality downloadable audio file.](https://github.com/sound-ws/audio-mix-service)
+
+![Architecture](./assets//architecture.png "Architecture")
 
 ## Usage
 
