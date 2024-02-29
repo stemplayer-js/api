@@ -1,16 +1,18 @@
 openapi: 3.0.0
 info:
   version: 0.0.1
-  title: Stem Player Service Collection (Beta)
-  description: A collection of API service endpoints for use in combination with our Stem Player
-  termsOfService: https://www.sound.ws/terms-of-service
-  license:
-    name: LICENSE
-    url: https://www.sound.ws/terms-and-conditions
+  title: StemPlayerJS API
+  description: A collection of API service endpoints for use with StemPlayerJS
 
-servers:
-  - url: https://blobr.soundwebservices.net/v1
-    description: The API exposed through Blobr.io
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+security:
+  - bearerAuth: []
 
 paths:
   /hls:
@@ -26,7 +28,7 @@ paths:
             type: string
             example: https://abcdefg01234.cloudfront.net/drums.wav
       responses:
-        '200':
+        "200":
           description: Success
           content:
             application/x-mpegURL:
@@ -42,7 +44,7 @@ paths:
                   https://abcdefg01234.cloudfront.net/processed-audio/...
                   #EXTINF:5.000000,
                   https://abcdefg01234.cloudfront.net/processed-audio/...
-        '400':
+        "400":
           description: Bad Request
           content:
             application/json:
@@ -57,7 +59,7 @@ paths:
     get:
       summary: Gets a waveform as json data from an audio file
       description: Gets waveform data based on a audio file provided by a URL
-      operationId: getM3u8
+      operationId: getWaveform
       parameters:
         - in: query
           name: sourceUrl
@@ -66,7 +68,7 @@ paths:
             type: string
             example: https://abcdefg01234.cloudfront.net/drums-wav
       responses:
-        '200':
+        "200":
           description: Success
           content:
             application/json:
@@ -150,7 +152,7 @@ paths:
                         description: the value
 
       responses:
-        '303':
+        "303":
           description: Redirect to audio mix status
           headers:
             Location:
@@ -191,7 +193,7 @@ paths:
             type: string
             format: uuid
       responses:
-        '200':
+        "200":
           description: The request to get the status of the request was succesfull
           content:
             application/json:
@@ -234,12 +236,12 @@ paths:
                         description: A ISO date indicating when the request was received
                         type: string
                         format: date-time
-                        example: '2022-02-09T07:47:28.691Z'
+                        example: "2022-02-09T07:47:28.691Z"
                       completedAt:
                         description: An ISO date indicating when the request was completed
                         type: string
                         format: date-time
-                        example: '2022-02-09T07:49:28.691Z'
+                        example: "2022-02-09T07:49:28.691Z"
                       timeTaken:
                         description: The time (in miliseconds) it took to complete the request
                         type: integer
