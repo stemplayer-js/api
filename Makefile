@@ -32,7 +32,3 @@ dump-stack:
 test:
 	npx jest tests/
 
-define show_api_key_warning
-	@echo "\033[0;33mNote that the API is configured to require an API key. This needs to be configured manually. If this is not needed, disable the relevant resources in template.yaml\033[0m"
-endef
-
