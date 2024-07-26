@@ -47,21 +47,21 @@ Resources:
     Properties:
       Location:
         ApplicationId: arn:aws:serverlessrepo:us-east-1:715905027390:applications/fc-audio-tools-lambda-layer
-        SemanticVersion: 1.0.6-beta.3
+        SemanticVersion: 1.0.6
 
   fcaudiowaveformlambdalayer:
     Type: AWS::Serverless::Application
     Properties:
       Location:
         ApplicationId: arn:aws:serverlessrepo:us-east-1:715905027390:applications/fc-audiowaveform-lambda-layer
-        SemanticVersion: 1.0.6-beta.3
+        SemanticVersion: 1.0.6
 
   fclambdabearerauthorizer:
     Type: AWS::Serverless::Application
     Properties:
       Location:
         ApplicationId: arn:aws:serverlessrepo:us-east-1:715905027390:applications/fc-lambda-bearer-authorizer
-        SemanticVersion: 0.0.3-beta.4
+        SemanticVersion: 0.0.3
       Parameters:
         JwtAudience: stemplayer-js-api
         SwsSecret: !Ref SwsSecret
@@ -71,7 +71,7 @@ Resources:
     Properties:
       Location:
         ApplicationId: arn:aws:serverlessrepo:us-east-1:715905027390:applications/fc-audio-mix-service
-        SemanticVersion: 3.0.3-beta.5
+        SemanticVersion: 3.0.3
       Parameters:
         LogLevel: !Ref LogLevel
         StageName: !Ref StageName
@@ -87,7 +87,7 @@ Resources:
     Properties:
       Location:
         ApplicationId: arn:aws:serverlessrepo:us-east-1:715905027390:applications/fc-hls-service
-        SemanticVersion: 3.2.0-beta.3
+        SemanticVersion: 3.2.0
       Parameters:
         LogLevel: !Ref LogLevel
         StageName: !Ref StageName
@@ -109,7 +109,7 @@ Resources:
     Properties:
       Location:
         ApplicationId: arn:aws:serverlessrepo:us-east-1:715905027390:applications/fc-audio-waveform-service
-        SemanticVersion: 3.0.3-beta.6
+        SemanticVersion: 3.0.3
       Parameters:
         LogLevel: !Ref LogLevel
         StageName: !Ref StageName
