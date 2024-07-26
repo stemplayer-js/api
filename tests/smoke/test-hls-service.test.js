@@ -15,7 +15,7 @@ describe("hls-service", () => {
     const { HlsServiceEndpoint } = AWS_STACK;
 
     const token = getToken();
-    const url = `${HlsServiceEndpoint}?sourceUrl=${encodeURIComponent(
+    const url = `${HlsServiceEndpoint}/hls?sourceUrl=${encodeURIComponent(
       "https://stems-example-audio.s3.eu-west-2.amazonaws.com/default/drumsv2/mp3/Stem_Bass_1.mp3"
     )}`;
 

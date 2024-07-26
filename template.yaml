@@ -42,56 +42,56 @@ Parameters:
     Default: 86400 # 24 hours
 
 Resources:
-  soundwsaudiotoolslambdalayer:
+  fcaudiotoolslambdalayer:
     Type: AWS::Serverless::Application
     Properties:
       Location:
-        ApplicationId: arn:aws:serverlessrepo:us-east-1:715905027390:applications/soundws-audio-tools-lambda-layer
-        SemanticVersion: 1.0.5
+        ApplicationId: arn:aws:serverlessrepo:us-east-1:715905027390:applications/fc-audio-tools-lambda-layer
+        SemanticVersion: 1.0.6-beta.3
 
-  soundwsaudiowaveformlambdalayer:
+  fcaudiowaveformlambdalayer:
     Type: AWS::Serverless::Application
     Properties:
       Location:
-        ApplicationId: arn:aws:serverlessrepo:us-east-1:715905027390:applications/soundws-audiowaveform-lambda-layer
-        SemanticVersion: 1.0.5
+        ApplicationId: arn:aws:serverlessrepo:us-east-1:715905027390:applications/fc-audiowaveform-lambda-layer
+        SemanticVersion: 1.0.6-beta.3
 
-  soundwslambdabearerauthorizer:
+  fclambdabearerauthorizer:
     Type: AWS::Serverless::Application
     Properties:
       Location:
-        ApplicationId: arn:aws:serverlessrepo:us-east-1:715905027390:applications/soundws-lambda-bearer-authorizer
-        SemanticVersion: 0.0.2
+        ApplicationId: arn:aws:serverlessrepo:us-east-1:715905027390:applications/fc-lambda-bearer-authorizer
+        SemanticVersion: 0.0.3-beta.4
       Parameters:
         JwtAudience: stemplayer-js-api
         SwsSecret: !Ref SwsSecret
 
-  soundwsaudiomixservice:
+  fcaudiomixservice:
     Type: AWS::Serverless::Application
     Properties:
       Location:
-        ApplicationId: arn:aws:serverlessrepo:us-east-1:715905027390:applications/soundws-audio-mix-service
-        SemanticVersion: 3.0.2
+        ApplicationId: arn:aws:serverlessrepo:us-east-1:715905027390:applications/fc-audio-mix-service
+        SemanticVersion: 3.0.3-beta.5
       Parameters:
         LogLevel: !Ref LogLevel
         StageName: !Ref StageName
         SwsSecret: !Ref SwsSecret
-        AudioToolsLayerArn: !GetAtt soundwsaudiotoolslambdalayer.Outputs.LayerVersion
+        AudioToolsLayerArn: !GetAtt fcaudiotoolslambdalayer.Outputs.LayerVersion
         CORSAllowedOrigins: !Ref CORSAllowedOrigins
         BucketName: !Ref StorageBucketName
         ExistingBucket: true
-        AuthorizerArn: !GetAtt soundwslambdabearerauthorizer.Outputs.LambdaAuthorizerFunctionArn
+        AuthorizerArn: !GetAtt fclambdabearerauthorizer.Outputs.LambdaAuthorizerFunctionArn
 
-  soundwshlsservice:
+  fchlsservice:
     Type: AWS::Serverless::Application
     Properties:
       Location:
-        ApplicationId: arn:aws:serverlessrepo:us-east-1:715905027390:applications/soundws-hls-service
-        SemanticVersion: 3.1.1
+        ApplicationId: arn:aws:serverlessrepo:us-east-1:715905027390:applications/fc-hls-service
+        SemanticVersion: 3.2.0-beta.3
       Parameters:
         LogLevel: !Ref LogLevel
         StageName: !Ref StageName
-        AudioToolsLayerArn: !GetAtt soundwsaudiotoolslambdalayer.Outputs.LayerVersion
+        AudioToolsLayerArn: !GetAtt fcaudiotoolslambdalayer.Outputs.LayerVersion
         AllowedAudioOrigins: !Ref AllowedAudioOrigins
         CORSAllowedOrigins: !Ref CORSAllowedOrigins
         AllowedFormats: "mp3,oga"
@@ -102,23 +102,23 @@ Resources:
         AllowedSegmentDuration: 5
         AudioCacheTtl: !Ref AudioCacheTtl
         SignedUrlExpirySec: !Ref SignedUrlExpirySec
-        AuthorizerArn: !GetAtt soundwslambdabearerauthorizer.Outputs.LambdaAuthorizerFunctionArn
+        AuthorizerArn: !GetAtt fclambdabearerauthorizer.Outputs.LambdaAuthorizerFunctionArn
 
-  soundwsaudiowaveformservice:
+  fcaudiowaveformservice:
     Type: AWS::Serverless::Application
     Properties:
       Location:
-        ApplicationId: arn:aws:serverlessrepo:us-east-1:715905027390:applications/soundws-audio-waveform-service
-        SemanticVersion: 3.0.2
+        ApplicationId: arn:aws:serverlessrepo:us-east-1:715905027390:applications/fc-audio-waveform-service
+        SemanticVersion: 3.0.3-beta.6
       Parameters:
         LogLevel: !Ref LogLevel
         StageName: !Ref StageName
-        AudiowaveformLayerArn: !GetAtt soundwsaudiowaveformlambdalayer.Outputs.LayerVersion
+        AudiowaveformLayerArn: !GetAtt fcaudiowaveformlambdalayer.Outputs.LayerVersion
         AllowedAudioOrigins: !Ref AllowedAudioOrigins
         CORSAllowedOrigins: !Ref CORSAllowedOrigins
         BucketName: !Ref StorageBucketName
         ExistingBucket: true
-        AuthorizerArn: !GetAtt soundwslambdabearerauthorizer.Outputs.LambdaAuthorizerFunctionArn
+        AuthorizerArn: !GetAtt fclambdabearerauthorizer.Outputs.LambdaAuthorizerFunctionArn
 
   StorageBucket:
     Type: AWS::S3::Bucket
@@ -145,13 +145,13 @@ Resources:
 Outputs:
   AudioMixServiceEndpoint:
     Description: "The endpoint to the audio-mix-service"
-    Value: !GetAtt soundwsaudiomixservice.Outputs.ServiceApi
+    Value: !GetAtt fcaudiomixservice.Outputs.ServiceApi
   HlsServiceEndpoint:
     Description: "The endpoint to the hls-service"
-    Value: !GetAtt soundwshlsservice.Outputs.ServiceApi
+    Value: !GetAtt fchlsservice.Outputs.ServiceApi
   AudioWaveformServiceEndpoint:
     Description: "The endpoint to the audiowaveform-service"
-    Value: !GetAtt soundwsaudiowaveformservice.Outputs.ServiceApi
+    Value: !GetAtt fcaudiowaveformservice.Outputs.ServiceApi
   SwsSecret:
     Description: "The secret"
     Value: !Ref SwsSecret

@@ -15,7 +15,7 @@ describe("waveform-service", () => {
     const { AudioWaveformServiceEndpoint } = AWS_STACK;
 
     const token = getToken();
-    const url = `${AudioWaveformServiceEndpoint}?sourceUrl=${encodeURIComponent(
+    const url = `${AudioWaveformServiceEndpoint}/waveform?sourceUrl=${encodeURIComponent(
       "https://stems-example-audio.s3.eu-west-2.amazonaws.com/default/drumsv2/mp3/Stem_Bass_1.mp3"
     )}`;
 

@@ -15,7 +15,7 @@ describe("audio-mix-service", () => {
     const { AudioMixServiceEndpoint } = AWS_STACK;
 
     const token = getToken();
-    const url = AudioMixServiceEndpoint;
+    const url = `${AudioMixServiceEndpoint}/mix`;
     const payload = {
       sources: [
         {
